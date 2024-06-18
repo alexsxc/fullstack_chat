@@ -1,10 +1,33 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore, createSlice } from '@reduxjs/toolkit';
+import { Provider } from 'react-redux';
 
-export const store = configureStore({
-  reducer: {},
-})
+interface AppState {
+  showRegister: boolean;
+}
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
-export type RootState = ReturnType<typeof store.getState>
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
-export type AppDispatch = typeof store.dispatch
+const initialState: AppState = {
+  showRegister: false,
+};
+
+const appSlice = createSlice({
+  name: 'app',
+  initialState,
+  reducers: {
+    showRegisterPage: (state) => {
+      state.showRegister = true;
+    },
+  },
+});
+
+export const { showRegisterPage } = appSlice.actions;
+
+const store = configureStore({
+  reducer: {
+    app: appSlice.reducer,
+  },
+});
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+
+export { store, Provider };
